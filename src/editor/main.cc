@@ -110,13 +110,6 @@ int main(void) {
   Halide::Runtime::Buffer<uint8_t> output = Halide::Runtime::Buffer<uint8_t>(
       input.width(), input.height(), input.channels());
   format_chunky(input, output);
-  std::cout << "stride[0] = " << input.stride(0) << std::endl;
-  std::cout << "stride[1] = " << input.stride(1) << std::endl;
-  std::cout << "stride[2] = " << input.stride(2) << std::endl;
-  // Halide::Buffer<uint8_t> output = PlanarToInterleaved(input);
-  // std::cout << "stride[0] = " << output.stride(0) << std::endl;
-  // std::cout << "stride[1] = " << output.stride(1) << std::endl;
-  // std::cout << "stride[2] = " << output.stride(2) << std::endl;
   GLFWwindow *window;
 
   /* Initialize the library */
