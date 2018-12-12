@@ -1,0 +1,1 @@
+/usr/bin/c++   -lglfw -lGL -lGLEW -lHalide -ljpeg -lpng16 -lpthread   CMakeFiles/main.dir/src/editor/main.cc.o  -o main ./genfiles/format_chunky/format_chunky.a ./genfiles/halide_rt_host/halide_rt_host.a -ldl 

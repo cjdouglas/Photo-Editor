@@ -1,0 +1,1 @@
+/usr/bin/c++   -lglfw -lGL -lGLEW -lHalide -ljpeg -lpng16 -lpthread  -rdynamic CMakeFiles/format_chunky.rungen.dir/home/cdoug/ext/halide/tools/RunGenStubs.cpp.o  -o format_chunky.rungen -Wl,-rpath,/usr/local/lib lib_halide_library_from_generator_rungen.a ./genfiles/format_chunky/format_chunky.a -lpng -lz /usr/local/lib/libjpeg.so ./genfiles/halide_rt_host/halide_rt_host.a -ldl 

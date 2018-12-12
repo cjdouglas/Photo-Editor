@@ -1,0 +1,2 @@
+/usr/bin/ar qc libformat_chunky_cc.a  CMakeFiles/format_chunky_cc.dir/genfiles/format_chunky/format_chunky.generated.cpp.o
+/usr/bin/ranlib libformat_chunky_cc.a
