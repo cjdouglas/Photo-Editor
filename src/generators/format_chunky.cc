@@ -1,3 +1,6 @@
+// This generator is used to change a planar layout image
+// to chunky/packed/interleaved format for OpenGL
+
 #include <Halide.h>
 
 class FormatChunkyGenerator : public Halide::Generator<FormatChunkyGenerator> {

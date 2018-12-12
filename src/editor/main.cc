@@ -65,7 +65,7 @@ bool InitializePrograms() {
   return true;
 }
 
-void SetTexture(const Halide::Buffer<uint8_t> &buffer) {
+void SetTexture(const Halide::Runtime::Buffer<uint8_t> &buffer) {
   GL_CHECK(glActiveTexture(GL_TEXTURE0));
   GL_CHECK(glBindTexture(GL_TEXTURE_2D, photo_texture));
   GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, buffer.width(),
@@ -105,11 +105,11 @@ void DrawTexture() {
 }
 
 int main(void) {
-  Halide::Buffer<uint8_t> input =
+  Halide::Runtime::Buffer<uint8_t> input =
       Halide::Tools::load_image("src/images/dice.png");
-  Halide::Buffer<uint8_t> output =
-      Halide::Buffer<uint8_t>(input.width(), input.height(), input.channels());
-  format_chunky(input.raw_buffer(), output.raw_buffer());
+  Halide::Runtime::Buffer<uint8_t> output = Halide::Runtime::Buffer<uint8_t>(
+      input.width(), input.height(), input.channels());
+  format_chunky(input, output);
   std::cout << "stride[0] = " << input.stride(0) << std::endl;
   std::cout << "stride[1] = " << input.stride(1) << std::endl;
   std::cout << "stride[2] = " << input.stride(2) << std::endl;
