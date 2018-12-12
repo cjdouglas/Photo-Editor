@@ -1,8 +1,7 @@
 *.swp
-main
 CMakeLists.txt.user
 CMakeCache.txt
-CMakeFiles*
+CMakeFiles
 CMakeScripts
 Testing
 Makefile
