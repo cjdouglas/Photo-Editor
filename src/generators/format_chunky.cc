@@ -1,5 +1,7 @@
 // This generator is used to change a planar layout image
-// to chunky/packed/interleaved format for OpenGL
+// to chunky/packed/interleaved format for OpenGL.
+// The output buffer must be initialized as an interleaved
+// buffer (Halide::Runtime::Buffer<>::make_interleaved)
 
 #include <Halide.h>
 
@@ -14,7 +16,10 @@ public:
   Var x, y, c;
 
   void generate() {
-    output(x, y, c) = cast<uint8_t>(min(input(x, y, c) * 1.5f, 255));
+    output(x, y, c) = input(x, y, c);
+    output.dim(0).set_stride(4);
+    output.dim(1).set_stride(input.width() * 4);
+    output.dim(2).set_stride(1);
 
     if (vectorize_) {
       output.vectorize(x, natural_vector_size<uint8_t>());

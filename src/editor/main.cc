@@ -107,8 +107,10 @@ void DrawTexture() {
 int main(void) {
   Halide::Runtime::Buffer<uint8_t> input =
       Halide::Tools::load_image("src/images/dice.png");
-  Halide::Runtime::Buffer<uint8_t> output = Halide::Runtime::Buffer<uint8_t>(
-      input.width(), input.height(), input.channels());
+  Halide::Runtime::Buffer<uint8_t> output =
+      Halide::Runtime::Buffer<uint8_t>::make_interleaved(
+          input.type(), input.width(), input.height(), input.channels());
+
   format_chunky(input, output);
   GLFWwindow *window;
 
