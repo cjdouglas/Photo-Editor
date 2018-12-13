@@ -25,8 +25,6 @@ Halide.h
 -
 Halide/Tools/halide_image_io.h
 -
-SOIL/SOIL.h
--
 
 src/gl_util/gl_debug.h
 GL/glew.h

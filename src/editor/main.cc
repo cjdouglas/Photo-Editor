@@ -6,7 +6,6 @@
 #include <GLFW/glfw3.h>
 #include <Halide.h>
 #include <Halide/Tools/halide_image_io.h>
-#include <SOIL/SOIL.h>
 
 // Variables for the photo program.
 GLuint photo_program = 0;
@@ -66,10 +65,11 @@ bool InitializePrograms() {
 }
 
 void SetTexture(const Halide::Runtime::Buffer<uint8_t> &buffer) {
+  GLint image_type = buffer.channels() == 3 ? GL_RGB : GL_RGBA;
   GL_CHECK(glActiveTexture(GL_TEXTURE0));
   GL_CHECK(glBindTexture(GL_TEXTURE_2D, photo_texture));
-  GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, buffer.width(),
-                        buffer.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+  GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, image_type, buffer.width(),
+                        buffer.height(), 0, image_type, GL_UNSIGNED_BYTE,
                         buffer.data()));
 
   GL_CHECK(glGenerateMipmap(GL_TEXTURE_2D));
@@ -106,12 +106,19 @@ void DrawTexture() {
 
 int main(void) {
   Halide::Runtime::Buffer<uint8_t> input =
-      Halide::Tools::load_image("src/images/dice.png");
+      Halide::Tools::load_image("src/images/mustang.jpg");
+  if (input.channels() < 3) {
+    std::cout << "Error: image has too few channels" << std::endl;
+    return -1;
+  }
   Halide::Runtime::Buffer<uint8_t> output =
       Halide::Runtime::Buffer<uint8_t>::make_interleaved(
           input.type(), input.width(), input.height(), input.channels());
+  if (format_chunky(input, output) != 0) {
+    std::cout << "Error: changing image data layout failed" << std::endl;
+    return -1;
+  }
 
-  format_chunky(input, output);
   GLFWwindow *window;
 
   /* Initialize the library */
@@ -119,7 +126,8 @@ int main(void) {
     return -1;
 
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(840, 630, "Hello World", NULL, NULL);
+  window = glfwCreateWindow(input.width(), input.height(), "Hello World", NULL,
+                            NULL);
   if (!window) {
     glfwTerminate();
     return -1;
@@ -144,7 +152,7 @@ int main(void) {
   while (!glfwWindowShouldClose(window)) {
     /* Render here */
     GL_CHECK(glClearColor(0.f, 0.f, 0.f, 1.f));
-    glClear(GL_COLOR_BUFFER_BIT);
+    GL_CHECK(glClear(GL_COLOR_BUFFER_BIT));
 
     DrawTexture();
 
