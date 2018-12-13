@@ -1,1 +1,0 @@
-/usr/bin/c++   -lglfw -lGL -lGLEW -lHalide -ljpeg -lpng16 -lpthread  -rdynamic CMakeFiles/halide_library_runtime.generator_binary.dir/home/cdoug/ext/halide/tools/GenGen.cpp.o  -o halide_library_runtime.generator_binary -Wl,-rpath,/home/cdoug/ext/halide/bin /home/cdoug/ext/halide/bin/libHalide.so -lz -lrt -ldl -lpthread -lm -ldl 

@@ -1,5 +1,7 @@
 *.swp
 *.o
+.generator_binary
+.a
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
