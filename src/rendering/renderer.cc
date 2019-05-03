@@ -4,6 +4,22 @@
 #include "gl_util/gl_shader.h"
 
 bool Renderer::InitializePrograms() {
+  /* Initialize the library */
+  if (!glfwInit()) {
+    return false;
+  }
+
+  window =
+      glfwCreateWindow(window_width, window_height, "Hello World", NULL, NULL);
+
+  if (!window) {
+    glfwTerminate();
+    return false;
+  }
+
+  /* Make the window's context current */
+  glfwMakeContextCurrent(window);
+
   if (glewInit() != GLEW_OK) {
     std::cout << "glew init failed" << std::endl;
     return false;
@@ -88,7 +104,7 @@ void Renderer::DrawTexture() {
 
 void Renderer::DrawFrame() {
   Halide::Runtime::Buffer<uint8_t> input =
-      Halide::Tools::load_image("src/images/mustang.jpg");
+      Halide::Tools::load_image("src/images/dice.png");
   if (input.channels() < 3) {
     std::cout << "Error: image has too few channels" << std::endl;
     return;
@@ -103,21 +119,6 @@ void Renderer::DrawFrame() {
   }
 
   SetTexture(output);
-
-  /* Initialize the library */
-  if (!glfwInit()) {
-    return;
-  }
-
-  window = glfwCreateWindow(input.width(), input.height(), "Hello World", NULL,
-                            NULL);
-  if (!window) {
-    glfwTerminate();
-    return;
-  }
-
-  /* Make the window's context current */
-  glfwMakeContextCurrent(window);
 
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window)) {

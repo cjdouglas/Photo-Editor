@@ -30,4 +30,7 @@ private:
       0.5f,  0.5f,  1.f, 0.f, // Top right
       0.5f,  -0.5f, 1.f, 1.f  // Bottom right
   };
+
+  int window_width = 1600;
+  int window_height = 900;
 };
