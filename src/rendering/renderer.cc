@@ -71,6 +71,7 @@ void Renderer::SetTexture(const Halide::Runtime::Buffer<uint8_t> &buffer) {
                         buffer.height(), 0, image_type, GL_UNSIGNED_BYTE,
                         buffer.data()));
 
+  GL_CHECK(glGenerateMipmap(GL_TEXTURE_2D));
   GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
   GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
   GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
