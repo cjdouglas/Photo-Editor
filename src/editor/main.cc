@@ -1,23 +1,36 @@
-#include "rendering/renderer.cc"
+#include "gui/app.h"
+
+#include <iostream>
 #include <nanogui/nanogui.h>
 
 using namespace nanogui;
 
 int main(void) {
-  nanogui::init();
-  Screen *screen = new Screen(Vector2i(1500, 700), "NanoGUI Test");
-  FormHelper *gui = new FormHelper(screen);
-  ref<Window> window =
-      gui->addWindow(Eigen::Vector2i(10, 10), "Form helper example");
-  gui->addGroup("Other widgets");
-  gui->addButton("A button",
-                 []() { std::cout << "Button pressed." << std::endl; });
+  try {
+    nanogui::init();
+    nanogui::ref<App> app = new App();
+    app->drawAll();
+    app->setVisible(true);
+    nanogui::mainloop();
+  } catch (const std::runtime_error &e) {
+    std::cout << "An error occured" << std::endl;
+  }
+  /*
+nanogui::init();
+Screen *screen = new Screen(Vector2i(1500, 700), "NanoGUI Test");
+FormHelper *gui = new FormHelper(screen);
+ref<Window> window =
+gui->addWindow(Eigen::Vector2i(10, 10), "Form helper example");
+gui->addGroup("Other widgets");
+gui->addButton("A button",
+           []() { std::cout << "Button pressed." << std::endl; });
 
-  screen->setVisible(true);
-  screen->performLayout();
-  window->center();
+screen->setVisible(true);
+screen->performLayout();
+window->center();
 
-  nanogui::mainloop();
+nanogui::mainloop();
+  */
   /*
 Renderer renderer;
 if (!renderer.InitializePrograms()) {
