@@ -1,5 +1,5 @@
 #ifndef GL_UTIL_GL_DEBUG_H_
-#define GL_UTIL_GL_DEBUG_H
+#define GL_UTIL_GL_DEBUG_H_
 
 #include <GL/glew.h>
 #include <csignal>
