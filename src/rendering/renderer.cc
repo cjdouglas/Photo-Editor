@@ -2,22 +2,9 @@
 #include "gl_util/gl_debug.h"
 #include "gl_util/gl_shader.h"
 
-Renderer::Renderer(nanogui::Widget *parent, GLFWwindow *window)
-    : nanogui::GLCanvas(parent) {
-  this->window = window;
-}
+Renderer::Renderer(nanogui::Widget *parent) : nanogui::GLCanvas(parent) {}
 
 bool Renderer::initProgram() {
-  if (!glfwInit()) {
-    return false;
-  }
-
-  glfwMakeContextCurrent(this->window);
-
-  if (!glewInit() != GLEW_OK) {
-    return false;
-  }
-
   GL_CHECK(glEnable(GL_BLEND));
   GL_CHECK(glEnable(GL_TEXTURE_2D));
   GL_CHECK(glDisable(GL_CULL_FACE));
@@ -45,6 +32,8 @@ bool Renderer::initProgram() {
                glGetAttribLocation(photo_program, "a_TexturePosition"));
   GL_CHECK(u_photo_texture_location =
                glGetUniformLocation(photo_program, "u_Texture"));
+  GL_CHECK(u_photo_brightness_location =
+               glGetUniformLocation(photo_program, "u_Brightness"));
 
   GL_CHECK(glGenBuffers(1, &photo_vertex_buffer));
   GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, photo_vertex_buffer));
@@ -56,13 +45,14 @@ bool Renderer::initProgram() {
   return true;
 }
 
-void Renderer::drawGL() {
+void Renderer::drawTexture() {
   GL_CHECK(glUseProgram(photo_program));
   GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, photo_vertex_buffer));
   GL_CHECK(glActiveTexture(GL_TEXTURE0));
   GL_CHECK(glBindTexture(GL_TEXTURE_2D, photo_texture));
 
   GL_CHECK(glUniform1i(u_photo_texture_location, 0));
+  GL_CHECK(glUniform1f(u_photo_brightness_location, brightness));
   GL_CHECK(glEnableVertexAttribArray(a_photo_position_location));
   GL_CHECK(glVertexAttribPointer(
       a_photo_position_location, /* size= */ 2, GL_FLOAT, GL_FALSE,
@@ -78,3 +68,22 @@ void Renderer::drawGL() {
   GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, 0));
   GL_CHECK(glBindTexture(GL_TEXTURE_2D, 0));
 }
+
+void Renderer::setTexture(const Halide::Runtime::Buffer<uint8_t> &buffer) {
+  GLint image_type = buffer.channels() == 3 ? GL_RGB : GL_RGBA;
+  GL_CHECK(glActiveTexture(GL_TEXTURE0));
+  GL_CHECK(glBindTexture(GL_TEXTURE_2D, photo_texture));
+  GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, image_type, buffer.width(),
+                        buffer.height(), 0, image_type, GL_UNSIGNED_BYTE,
+                        buffer.data()));
+
+  GL_CHECK(glGenerateMipmap(GL_TEXTURE_2D));
+  GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+  GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+  GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                           GL_LINEAR_MIPMAP_NEAREST));
+  GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+  GL_CHECK(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+void Renderer::drawGL() { drawTexture(); }

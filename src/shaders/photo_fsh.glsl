@@ -3,9 +3,11 @@
 // The photo texture we are drawing.
 uniform sampler2D u_Texture;
 
+uniform float u_Brightness;
+
 // The texture coordinate we are rendering.
 varying vec4 v_TexturePosition;
 
 void main() {
-	gl_FragColor = texture2D(u_Texture, v_TexturePosition.xy);
+	gl_FragColor = texture2D(u_Texture, v_TexturePosition.xy) * u_Brightness;
 }
