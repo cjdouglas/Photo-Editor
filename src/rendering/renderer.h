@@ -14,7 +14,7 @@ public:
   void setTexture(const Halide::Runtime::Buffer<uint8_t> &buffer);
   virtual void drawGL() override;
 
-  // Effects accessors
+  // Effect setters
   void setBrightness(const float &b) { brightness = b; }
 
 private:
