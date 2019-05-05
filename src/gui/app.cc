@@ -72,34 +72,18 @@ void App::setSize(const int width, const int height) {
 }
 
 void App::buildInterface() {
-  // Test load texture
-  Halide::Runtime::Buffer<uint8_t> input =
-      Halide::Tools::load_image("src/images/dice.png");
-  if (input.channels() < 3) {
-    std::cout << "Error: image has too few channels" << std::endl;
-    return;
-  }
-
-  Halide::Runtime::Buffer<uint8_t> output =
-      Halide::Runtime::Buffer<uint8_t>::make_interleaved(
-          input.type(), input.width(), input.height(), input.channels());
-  if (format_chunky(input, output) != 0) {
-    std::cout << "Error: changing image data layout failed" << std::endl;
-    return;
-  }
-
   renderer = new Renderer(this);
   renderer->setDrawBorder(false);
   renderer->setBackgroundColor({0, 0, 0, 255});
-  renderer->setPosition(
-      {(width - input.width()) / 2, (height - input.height()) / 2});
-  renderer->setSize({input.width(), input.height()});
   renderer->initProgram();
-  renderer->setTexture(output);
 
   FormHelper *form = new FormHelper(this);
   ref<Window> nanoWindow =
       form->addWindow(Eigen::Vector2i(10, 10), "Editor Controls");
+  form->addButton("Open file", [&] {
+    loadFile(
+        file_dialog({{"png", "PNG"}, {"jpg", "JPG"}, {"jpeg", "JPEG"}}, false));
+  });
   Slider *slider = new Slider(nanoWindow);
   slider->setValue(1.f);
   slider->setRange(std::pair<float, float>(0.5f, 1.5f));
@@ -116,6 +100,28 @@ void App::buildInterface() {
   glfwSetDropCallback(window, dropCallback);
   glfwSetScrollCallback(window, scrollCallback);
   glfwSetWindowSizeCallback(window, resizeCallbackF);
+}
+
+void App::loadFile(const std::string &path) {
+  // Test load texture
+  Halide::Runtime::Buffer<uint8_t> input = Halide::Tools::load_image(path);
+  if (input.channels() < 3) {
+    std::cout << "Error: image has too few channels" << std::endl;
+    return;
+  }
+
+  Halide::Runtime::Buffer<uint8_t> output =
+      Halide::Runtime::Buffer<uint8_t>::make_interleaved(
+          input.type(), input.width(), input.height(), input.channels());
+  if (format_chunky(input, output) != 0) {
+    std::cout << "Error: changing image data layout failed" << std::endl;
+    return;
+  }
+
+  renderer->setPosition(
+      {(width - input.width()) / 2, (height - input.height()) / 2});
+  renderer->setSize({input.width(), input.height()});
+  renderer->setTexture(output);
 }
 
 void App::mainloop() {

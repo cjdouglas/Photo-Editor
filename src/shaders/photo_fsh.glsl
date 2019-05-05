@@ -3,6 +3,7 @@
 // The photo texture we are drawing.
 uniform sampler2D u_Texture;
 
+// The brightness modifier of the texture.
 uniform float u_Brightness;
 
 // The texture coordinate we are rendering.

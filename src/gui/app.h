@@ -12,6 +12,7 @@ class App : public nanogui::Screen {
 public:
   App(const int width, const int height);
   void setSize(const int width, const int height);
+  void loadFile(const std::string &path);
   void mainloop();
 
 private:
