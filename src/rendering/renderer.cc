@@ -70,6 +70,8 @@ void Renderer::drawTexture() {
 }
 
 void Renderer::setTexture(const Halide::Runtime::Buffer<uint8_t> &buffer) {
+  texture_width = buffer.width();
+  texture_height = buffer.height();
   GLint image_type = buffer.channels() == 3 ? GL_RGB : GL_RGBA;
   GL_CHECK(glActiveTexture(GL_TEXTURE0));
   GL_CHECK(glBindTexture(GL_TEXTURE_2D, photo_texture));
