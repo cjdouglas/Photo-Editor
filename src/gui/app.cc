@@ -97,7 +97,7 @@ void App::buildInterface() {
   Slider *vignetteIntensity = new Slider(nanoWindow);
   Slider *vignetteRadius = new Slider(nanoWindow);
   vignetteIntensity->setValue(0);
-  vignetteIntensity->setRange({0, 0.75});
+  vignetteIntensity->setRange({0, 1});
   vignetteIntensity->setCallback(
       [&](float v) { renderer->setVignetteIntensity(v); });
   vignetteRadius->setValue(0.75);
