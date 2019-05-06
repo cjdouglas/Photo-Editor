@@ -31,7 +31,6 @@ private:
   GLuint a_photo_texture_position_location;
   GLuint u_photo_color_location;
   GLuint u_photo_texture_location;
-  GLuint u_photo_texture_resolution_location;
 
   // Effects
   GLuint u_photo_brightness_location;

@@ -32,8 +32,6 @@ bool Renderer::initProgram() {
                glGetAttribLocation(photo_program, "a_TexturePosition"));
   GL_CHECK(u_photo_texture_location =
                glGetUniformLocation(photo_program, "u_Texture"));
-  GL_CHECK(u_photo_texture_resolution_location =
-               glGetUniformLocation(photo_program, "u_TextureResolution"));
   GL_CHECK(u_photo_brightness_location =
                glGetUniformLocation(photo_program, "u_Brightness"));
   GL_CHECK(u_photo_vignette_intensity_location =
@@ -59,8 +57,6 @@ void Renderer::drawTexture() {
 
   // Bind uniforms
   GL_CHECK(glUniform1i(u_photo_texture_location, 0));
-  GL_CHECK(glUniform2i(u_photo_texture_resolution_location, texture_width,
-                       texture_height));
   GL_CHECK(glUniform1f(u_photo_brightness_location, brightness));
   GL_CHECK(glUniform1f(u_photo_vignette_intensity_location, vignetteIntensity));
   GL_CHECK(glUniform1f(u_photo_vignette_radius_location, vignetteRadius));

@@ -3,9 +3,6 @@
 // The photo texture we are drawing.
 uniform sampler2D u_Texture;
 
-// The resolution of the current texture.
-uniform ivec2 u_TextureResolution;
-
 // The brightness modifier of the texture.
 uniform float u_Brightness;
 
@@ -26,7 +23,6 @@ void main() {
 
 	// Vignette calculation
 	vec2 position = vec2(0.5) - vec2(v_TexturePosition.xy);
-	position.x *=  (u_TextureResolution.x / u_TextureResolution.y);
 	float len = length(position);
 	float vignette = 
 		smoothstep(u_VignetteRadius, u_VignetteRadius - VIGNETTE_SOFTNESS, len);
