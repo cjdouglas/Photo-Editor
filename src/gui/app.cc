@@ -76,6 +76,7 @@ void App::buildInterface() {
   renderer->setDrawBorder(false);
   renderer->setBackgroundColor({0, 0, 0, 255});
   renderer->initProgram();
+  renderer->setVisible(false);
 
   FormHelper *form = new FormHelper(this);
   ref<Window> nanoWindow =
@@ -136,6 +137,9 @@ void App::loadFile(const std::string &path) {
       {(width - output.width()) / 2, (height - output.height()) / 2});
   renderer->setSize({output.width(), output.height()});
   renderer->setTexture(&output);
+  if (!renderer->visible()) {
+    renderer->setVisible(true);
+  }
 }
 
 void App::mainloop() {
