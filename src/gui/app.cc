@@ -84,11 +84,26 @@ void App::buildInterface() {
     loadFile(
         file_dialog({{"png", "PNG"}, {"jpg", "JPG"}, {"jpeg", "JPEG"}}, false));
   });
-  Slider *slider = new Slider(nanoWindow);
-  slider->setValue(1.f);
-  slider->setRange(std::pair<float, float>(0.5f, 1.5f));
-  slider->setCallback([&](float v) { renderer->setBrightness(v); });
-  form->addWidget("Brightness", slider);
+
+  form->addGroup("Color");
+  Slider *brightnessSlider = new Slider(nanoWindow);
+  brightnessSlider->setValue(1);
+  brightnessSlider->setRange({0.5, 1.5});
+  brightnessSlider->setCallback([&](float v) { renderer->setBrightness(v); });
+  form->addWidget("Brightness", brightnessSlider);
+
+  form->addGroup("Vignette");
+  Slider *vignetteIntensity = new Slider(nanoWindow);
+  Slider *vignetteRadius = new Slider(nanoWindow);
+  vignetteIntensity->setValue(0);
+  vignetteIntensity->setRange({0, 0.75});
+  vignetteIntensity->setCallback(
+      [&](float v) { renderer->setVignetteIntensity(v); });
+  vignetteRadius->setValue(0.75);
+  vignetteRadius->setRange({0.5, 1});
+  vignetteRadius->setCallback([&](float v) { renderer->setVignetteRadius(v); });
+  form->addWidget("Intensity", vignetteIntensity);
+  form->addWidget("Radius", vignetteRadius);
 
   setVisible(true);
   performLayout();
@@ -120,13 +135,13 @@ void App::loadFile(const std::string &path) {
   renderer->setPosition(
       {(width - output.width()) / 2, (height - output.height()) / 2});
   renderer->setSize({output.width(), output.height()});
-  renderer->setTexture(output);
+  renderer->setTexture(&output);
 }
 
 void App::mainloop() {
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
-    glClearColor(0.f, 0.f, 0.f, 1.f);
+    glClearColor(1.f, 1.f, 1.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     drawContents();

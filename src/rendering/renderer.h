@@ -11,15 +11,16 @@ public:
   Renderer(nanogui::Widget *parent);
   bool initProgram();
   void drawTexture();
-  void setTexture(const Halide::Runtime::Buffer<uint8_t> &buffer);
+  void setTexture(Halide::Runtime::Buffer<uint8_t> *buffer);
   virtual void drawGL() override;
 
   // Effect setters
-  void setBrightness(const float &b) { brightness = b; }
+  void setBrightness(const float v) { brightness = v; }
+  void setVignetteIntensity(const float v) { vignetteIntensity = v; }
+  void setVignetteRadius(const float v) { vignetteRadius = v; }
 
 private:
-  int texture_width;
-  int texture_height;
+  Halide::Runtime::Buffer<uint8_t> *texture = nullptr;
 
   GLuint photo_program = 0;
 
@@ -30,9 +31,12 @@ private:
   GLuint a_photo_texture_position_location;
   GLuint u_photo_color_location;
   GLuint u_photo_texture_location;
+  GLuint u_photo_texture_resolution_location;
 
   // Effects
   GLuint u_photo_brightness_location;
+  GLuint u_photo_vignette_intensity_location;
+  GLuint u_photo_vignette_radius_location;
 
   float texture_data[16] = {
       -1.0f, 1.0f,  0.f, 0.f, // Top left
@@ -41,7 +45,12 @@ private:
       1.0f,  -1.0f, 1.f, 1.f  // Bottom right
   };
 
+  int texture_width;
+  int texture_height;
+
   float brightness = 1.0f;
+  float vignetteIntensity = 0.0f;
+  float vignetteRadius = 0.75f;
 };
 
 #endif // RENDERING_RENDERER_H_
