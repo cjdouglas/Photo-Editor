@@ -22,11 +22,14 @@ public:
 private:
   Halide::Runtime::Buffer<uint8_t> *texture = nullptr;
 
+  // Programs
   GLuint photo_program = 0;
 
+  // Textures & buffers
   GLuint photo_texture;
   GLuint photo_vertex_buffer;
 
+  // Attributes & uniforms
   GLuint a_photo_position_location;
   GLuint a_photo_texture_position_location;
   GLuint u_photo_color_location;
