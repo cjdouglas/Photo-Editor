@@ -3,7 +3,7 @@
 // The output buffer must be initialized as an interleaved
 // buffer (Halide::Runtime::Buffer<T>::make_interleaved)
 
-#include <Halide.h>
+#include "Halide.h"
 
 class FormatChunkyGenerator : public Halide::Generator<FormatChunkyGenerator> {
 public:

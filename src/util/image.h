@@ -1,7 +1,7 @@
 #ifndef UTIL_IMAGE_H_
 #define UTIL_IMAGE_H_
 
-#include <Halide.h>
+#include "Halide.h"
 
 namespace editor {
 

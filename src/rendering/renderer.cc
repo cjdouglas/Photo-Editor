@@ -1,4 +1,5 @@
 #include "rendering/renderer.h"
+
 #include "gl_util/gl_debug.h"
 #include "gl_util/gl_shader.h"
 

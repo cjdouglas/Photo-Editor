@@ -1,9 +1,10 @@
 #ifndef GL_UTIL_GL_SHADER_H_
 #define GL_UTIL_GL_SHADER_H_
 
-#include <GL/glew.h>
 #include <fstream>
 #include <sstream>
+
+#include "GL/glew.h"
 
 GLuint CreateShader(GLenum shader_type, const char *source) {
   std::ifstream ifs;

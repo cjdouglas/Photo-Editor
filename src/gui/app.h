@@ -1,12 +1,11 @@
 #ifndef GUI_APP_H_
 #define GUI_APP_H_
 
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+#include "nanogui/glcanvas.h"
+#include "nanogui/screen.h"
 #include "rendering/renderer.h"
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <nanogui/glcanvas.h>
-#include <nanogui/screen.h>
 
 namespace editor {
 

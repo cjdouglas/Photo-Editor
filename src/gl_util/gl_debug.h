@@ -1,9 +1,10 @@
 #ifndef GL_UTIL_GL_DEBUG_H_
 #define GL_UTIL_GL_DEBUG_H_
 
-#include <GL/glew.h>
 #include <csignal>
 #include <iostream>
+
+#include "GL/glew.h"
 
 #define ASSERT(x)                                                              \
   if (!(x))                                                                    \

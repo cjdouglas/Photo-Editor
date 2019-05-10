@@ -1,16 +1,16 @@
 #include "gui/app.h"
-#include "format_chunky.h"
-#include "util/image.h"
-
-#include <Halide.h>
-#include <Halide/Tools/halide_image_io.h>
-#include <nanogui/button.h>
-#include <nanogui/formhelper.h>
-#include <nanogui/layout.h>
-#include <nanogui/slider.h>
-#include <nanogui/window.h>
 
 #include <iostream>
+
+#include "Halide.h"
+#include "Halide/Tools/halide_image_io.h"
+#include "format_chunky.h"
+#include "nanogui/button.h"
+#include "nanogui/formhelper.h"
+#include "nanogui/layout.h"
+#include "nanogui/slider.h"
+#include "nanogui/window.h"
+#include "util/image.h"
 
 using namespace nanogui;
 

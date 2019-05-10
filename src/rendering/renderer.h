@@ -1,10 +1,10 @@
 #ifndef RENDERING_RENDERER_H_
 #define RENDERING_RENDERER_H_
 
-#include <GL/glew.h>
-#include <Halide.h>
-#include <nanogui/glcanvas.h>
-#include <nanogui/window.h>
+#include "GL/glew.h"
+#include "Halide.h"
+#include "nanogui/glcanvas.h"
+#include "nanogui/window.h"
 
 namespace editor {
 
