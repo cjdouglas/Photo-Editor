@@ -6,6 +6,8 @@
 #include <nanogui/glcanvas.h>
 #include <nanogui/window.h>
 
+namespace editor {
+
 class Renderer : public nanogui::GLCanvas {
 public:
   Renderer(nanogui::Widget *parent);
@@ -54,5 +56,7 @@ private:
   float vignetteIntensity = 0.0f;
   float vignetteRadius = 0.75f;
 };
+
+} // namespace editor
 
 #endif // RENDERING_RENDERER_H_

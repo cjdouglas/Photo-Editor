@@ -2,6 +2,8 @@
 #include "gl_util/gl_debug.h"
 #include "gl_util/gl_shader.h"
 
+namespace editor {
+
 Renderer::Renderer(nanogui::Widget *parent) : nanogui::GLCanvas(parent) {}
 
 bool Renderer::initProgram() {
@@ -102,3 +104,5 @@ void Renderer::drawGL() {
     drawTexture();
   }
 }
+
+} // namespace editor

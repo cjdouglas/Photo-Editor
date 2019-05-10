@@ -8,6 +8,8 @@
 #include <nanogui/glcanvas.h>
 #include <nanogui/screen.h>
 
+namespace editor {
+
 class App : public nanogui::Screen {
 public:
   App(const int width, const int height);
@@ -24,5 +26,7 @@ private:
 
   void buildInterface();
 };
+
+} // namespace editor
 
 #endif // GUI_APP_H_

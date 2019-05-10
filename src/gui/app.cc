@@ -14,6 +14,8 @@
 
 using namespace nanogui;
 
+namespace editor {
+
 namespace {
 static void cursorPosCallback(GLFWwindow *window, double x, double y) {
   App *app = static_cast<App *>(glfwGetWindowUserPointer(window));
@@ -157,3 +159,5 @@ void App::mainloop() {
 
   glfwTerminate();
 }
+
+} // namespace editor
