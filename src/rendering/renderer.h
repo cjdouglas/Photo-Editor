@@ -5,15 +5,17 @@
 #include "Halide.h"
 #include "nanogui/glcanvas.h"
 #include "nanogui/window.h"
+#include "util/image.h"
 
 namespace editor {
 
 class Renderer : public nanogui::GLCanvas {
 public:
   Renderer(nanogui::Widget *parent);
+  ~Renderer();
   bool initProgram();
   void drawTexture();
-  void setTexture(Halide::Runtime::Buffer<uint8_t> *buffer);
+  void setImage(Image *img);
   virtual void drawGL() override;
 
   // Effect setters
@@ -22,7 +24,7 @@ public:
   void setVignetteRadius(const float v) { vignetteRadius = v; }
 
 private:
-  Halide::Runtime::Buffer<uint8_t> *texture = nullptr;
+  std::unique_ptr<Image> image;
 
   // Programs
   GLuint photo_program = 0;

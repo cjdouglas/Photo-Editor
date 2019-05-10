@@ -4,7 +4,6 @@
 
 #include "Halide.h"
 #include "Halide/Tools/halide_image_io.h"
-#include "format_chunky.h"
 #include "nanogui/button.h"
 #include "nanogui/formhelper.h"
 #include "nanogui/layout.h"
@@ -122,24 +121,22 @@ void App::buildInterface() {
 }
 
 void App::loadFile(const std::string &path) {
+  if (path == "") {
+    return;
+  }
+
   Halide::Runtime::Buffer<uint8_t> input = Halide::Tools::load_image(path);
   if (input.channels() < 3) {
     std::cout << "Error: image has too few channels" << std::endl;
     return;
   }
 
-  Halide::Runtime::Buffer<uint8_t> output =
-      Halide::Runtime::Buffer<uint8_t>::make_interleaved(
-          input.type(), input.width(), input.height(), input.channels());
-  if (format_chunky(input, output) != 0) {
-    std::cout << "Error: changing image data layout failed" << std::endl;
-    return;
-  }
+  Image *img = new Image(std::move(input));
 
   renderer->setPosition(
-      {(width - output.width()) / 2, (height - output.height()) / 2});
-  renderer->setSize({output.width(), output.height()});
-  renderer->setTexture(&output);
+      {(width - input.width()) / 2, (height - input.height()) / 2});
+  renderer->setSize({input.width(), input.height()});
+  renderer->setImage(img);
   if (!renderer->visible()) {
     renderer->setVisible(true);
   }

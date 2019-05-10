@@ -1,11 +1,19 @@
 #include "rendering/renderer.h"
 
+#include "Halide/Tools/halide_image_io.h"
+#include "format_chunky.h"
 #include "gl_util/gl_debug.h"
 #include "gl_util/gl_shader.h"
 
 namespace editor {
 
 Renderer::Renderer(nanogui::Widget *parent) : nanogui::GLCanvas(parent) {}
+
+Renderer::~Renderer() {
+  if (image.get() != nullptr) {
+    image.release();
+  }
+}
 
 bool Renderer::initProgram() {
   GL_CHECK(glEnable(GL_BLEND));
@@ -80,16 +88,24 @@ void Renderer::drawTexture() {
   GL_CHECK(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
-void Renderer::setTexture(Halide::Runtime::Buffer<uint8_t> *buffer) {
-  texture = buffer;
-  texture_width = buffer->width();
-  texture_height = buffer->height();
-  GLint image_type = buffer->channels() == 3 ? GL_RGB : GL_RGBA;
+void Renderer::setImage(Image *img) {
+  Halide::Runtime::Buffer<uint8_t> tex =
+      Halide::Runtime::Buffer<uint8_t>::make_interleaved(
+          img->type(), img->width(), img->height(), img->channels());
+  if (format_chunky(img->mutable_buffer()->raw_buffer(), tex) != 0) {
+    std::cout << "Error: changing data layout failed." << std::endl;
+    return;
+  }
+
+  image.reset(img);
+  texture_width = img->width();
+  texture_height = img->height();
+  GLint image_type = img->channels() == 3 ? GL_RGB : GL_RGBA;
   GL_CHECK(glActiveTexture(GL_TEXTURE0));
   GL_CHECK(glBindTexture(GL_TEXTURE_2D, photo_texture));
-  GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, image_type, buffer->width(),
-                        buffer->height(), 0, image_type, GL_UNSIGNED_BYTE,
-                        buffer->data()));
+  GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, image_type, img->width(),
+                        img->height(), 0, image_type, GL_UNSIGNED_BYTE,
+                        tex.data()));
 
   GL_CHECK(glGenerateMipmap(GL_TEXTURE_2D));
   GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
@@ -101,7 +117,7 @@ void Renderer::setTexture(Halide::Runtime::Buffer<uint8_t> *buffer) {
 }
 
 void Renderer::drawGL() {
-  if (texture != nullptr) {
+  if (image.get() != nullptr) {
     drawTexture();
   }
 }

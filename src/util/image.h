@@ -9,8 +9,10 @@ class Image {
 public:
   Image(Halide::Runtime::Buffer<uint8_t> *buf);
   Image(Halide::Runtime::Buffer<uint8_t> &&buf);
+  ~Image();
   Halide::Runtime::Buffer<uint8_t> *mutable_buffer();
   const Halide::Runtime::Buffer<uint8_t> &buffer() const;
+  halide_type_t type() const;
   int width() const;
   int height() const;
   int channels() const;
