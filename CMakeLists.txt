@@ -14,7 +14,8 @@ include_directories(src)
 set(SOURCES 
 	src/editor/main.cc 
 	src/rendering/renderer.cc 
-	src/gui/app.cc)
+	src/gui/app.cc
+	src/util/image.cc)
 
 # Disable building extras we won't need (pure C++ project)
 set(NANOGUI_BUILD_EXAMPLE OFF CACHE BOOL " " FORCE)

@@ -1,5 +1,6 @@
 #include "gui/app.h"
 #include "format_chunky.h"
+#include "util/image.h"
 
 #include <Halide.h>
 #include <Halide/Tools/halide_image_io.h>
